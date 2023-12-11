@@ -1,6 +1,6 @@
 interface Card {
-  id: number;
-  winningCards: number;
+  id?: number;
+  winningCards?: number;
   copiedCards?: Card[];
 }
 
@@ -11,7 +11,11 @@ function solved4t2(input: string[]): number {
 
   input.forEach((line) => {
     const cardNumber = line.substring(0, line.indexOf(":"));
-    cards.push({ id: +cardNumber.split(" ")[1], winningCards: 0 });
+    cards.push({
+      id: +cardNumber.replace("Card", ""),
+      winningCards: 0,
+      copiedCards: [],
+    });
 
     const winningNumbers = line
       .substring(line.indexOf(":") + 1, line.indexOf("|"))
@@ -36,16 +40,7 @@ function solved4t2(input: string[]): number {
     cards[cards.length - 1].winningCards = winningCards;
   });
 
-  let totalWinningCards = 0;
+  for (let i = 0; i <= cards.length - 1; i++) {}
 
-  for (let card of cards) {
-  }
-
-  return totalPoints;
+  return 0;
 }
-
-function getCard(id: number): Card {
-  return cards.find((card) => card.id === id)!;
-}
-
-function getWinningCards(card: Card) {}
