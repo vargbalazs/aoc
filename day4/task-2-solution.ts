@@ -1,20 +1,19 @@
 interface Card {
   id?: number;
   winningCards?: number;
-  copiedCards?: Card[];
 }
 
-let cards: Card[] = [];
+let originalCards: Card[] = [];
+let totalPoints = 0;
+let temp: Card[] = [];
+let temp2: Card[] = [];
 
 function solved4t2(input: string[]): number {
-  let totalPoints = 0;
-
   input.forEach((line) => {
     const cardNumber = line.substring(0, line.indexOf(":"));
-    cards.push({
+    originalCards.push({
       id: +cardNumber.replace("Card", ""),
       winningCards: 0,
-      copiedCards: [],
     });
 
     const winningNumbers = line
@@ -37,10 +36,33 @@ function solved4t2(input: string[]): number {
       }
     });
 
-    cards[cards.length - 1].winningCards = winningCards;
+    originalCards[originalCards.length - 1].winningCards = winningCards;
   });
 
-  for (let i = 0; i <= cards.length - 1; i++) {}
+  totalPoints += originalCards.length;
 
-  return 0;
+  Object.assign(temp2, originalCards);
+
+  getCardNumbers(originalCards);
+
+  return totalPoints;
+}
+
+function getCardNumbers(cards: Card[]) {
+  if (cards.length === 0) return;
+  temp = [];
+  for (let i = 0; i <= cards.length - 1; i++) {
+    let winningCards = getCard(cards[i].id!).winningCards!;
+    totalPoints += winningCards;
+    if (winningCards > 0) {
+      for (let j = 1; j <= winningCards; j++) {
+        temp.push(getCard(cards[i].id! + j));
+      }
+    }
+  }
+  getCardNumbers(temp);
+}
+
+function getCard(id: number): Card {
+  return temp2.find((card) => card.id === id)!;
 }
