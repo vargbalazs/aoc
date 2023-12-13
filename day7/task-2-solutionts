@@ -5,15 +5,17 @@ interface Card {
   bid: number;
   strength: number;
   rank: number;
+  countOfJ: number;
 }
 
-function solved7t1(): number {
+function solved7t2(): number {
   const rankedCards: Card[] = [];
 
   for (let i = 0; i <= cards.length - 1; i++) {
-    let card: Card = { value: "", bid: 0, strength: 0, rank: 0 };
+    let card: Card = { value: "", bid: 0, strength: 0, rank: 0, countOfJ: 0 };
     card.value = cards[i].split(" ")[0];
     card.bid = +cards[i].split(" ")[1];
+    card.countOfJ = card.value.split("J").length - 1;
 
     if (fiveOfAKind(card.value)) card.strength = 7;
     if (fourOfAKind(card.value)) card.strength = 6;
@@ -24,6 +26,13 @@ function solved7t1(): number {
     if (highCard(card.value)) card.strength = 1;
 
     rankedCards.push(card);
+  }
+
+  for (let i = 0; i <= rankedCards.length - 1; i++) {
+    switch (rankedCards[i].strength) {
+      case 6:
+        break;
+    }
   }
 
   rankedCards.sort((card1, card2) => {
@@ -88,21 +97,23 @@ function solved7t1(): number {
   return winnings;
 }
 
+function transformCard(countOfJ: number, rankedCards: Card[]) {}
+
 function firstCardIsStronger(value1: string, value2: string): boolean {
   const labels = new Map<string, number>([
     ["A", 13],
     ["K", 12],
     ["Q", 11],
-    ["J", 10],
-    ["T", 9],
-    ["9", 8],
-    ["8", 7],
-    ["7", 6],
-    ["6", 5],
-    ["5", 4],
-    ["4", 3],
-    ["3", 2],
-    ["2", 1],
+    ["T", 10],
+    ["9", 9],
+    ["8", 8],
+    ["7", 7],
+    ["6", 6],
+    ["5", 5],
+    ["4", 4],
+    ["3", 3],
+    ["2", 2],
+    ["J", 1],
   ]);
 
   for (let i = 0; i <= 4; i++) {
