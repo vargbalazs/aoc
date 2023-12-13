@@ -31,6 +31,27 @@ function solved7t2(): number {
   for (let i = 0; i <= rankedCards.length - 1; i++) {
     switch (rankedCards[i].strength) {
       case 6:
+        if (rankedCards[i].countOfJ === 1 || rankedCards[i].countOfJ === 4)
+          rankedCards[i].strength = 7;
+        break;
+      case 5:
+        if (rankedCards[i].countOfJ === 2 || rankedCards[i].countOfJ === 3)
+          rankedCards[i].strength = 7;
+        break;
+      case 4:
+        if (rankedCards[i].countOfJ === 1 || rankedCards[i].countOfJ === 3)
+          rankedCards[i].strength = 6;
+        break;
+      case 3:
+        if (rankedCards[i].countOfJ === 1) rankedCards[i].strength = 5;
+        if (rankedCards[i].countOfJ === 2) rankedCards[i].strength = 6;
+        break;
+      case 2:
+        if (rankedCards[i].countOfJ === 1 || rankedCards[i].countOfJ === 2)
+          rankedCards[i].strength = 4;
+        break;
+      case 1:
+        if (rankedCards[i].countOfJ === 1) rankedCards[i].strength = 2;
         break;
     }
   }
