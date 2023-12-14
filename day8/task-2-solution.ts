@@ -33,30 +33,30 @@ function solved8t2(): number {
   }
 
   const nodesWithA = nodes.filter((node) => node.id[2] === "A");
-  let nextNodes: NetworkNode[] = [];
   let nextNode: NetworkNode = { id: "", left: "", right: "" };
-  let allEndsWithZ = false;
   let steps = 0;
+  const stepsToZ: number[] = [];
+  let foundZ = false;
 
-  Object.assign(nextNodes, nodesWithA);
-
-  while (!allEndsWithZ) {
-    for (let i = 0; i <= inst.length - 1; i++) {
-      for (let j = 0; j <= nodesWithA.length - 1; j++) {
-        nextNode = nextNodes[j];
-        if (inst[i] === "L") {
-          nextNode = findNode(nextNode.left, nodes);
-          nextNodes[j] = nextNode;
-        }
-        if (inst[i] === "R") {
-          nextNode = findNode(nextNode.right, nodes);
-          nextNodes[j] = nextNode;
+  for (let i = 0; i <= nodesWithA.length - 1; i++) {
+    nextNode = nodesWithA[i];
+    steps = 0;
+    foundZ = false;
+    while (!foundZ) {
+      for (let j = 0; j <= inst.length - 1; j++) {
+        if (inst[j] === "L") nextNode = findNode(nextNode.left, nodes);
+        if (inst[j] === "R") nextNode = findNode(nextNode.right, nodes);
+        steps++;
+        if (nextNode.id[2] === "Z") {
+          stepsToZ.push(steps);
+          foundZ = true;
+          break;
         }
       }
-      allEndsWithZ = checkForZ(nextNodes);
-      steps++;
     }
   }
+
+  steps = stepsToZ.reduce((a, b) => lcm(a, b));
 
   return steps;
 }
@@ -65,6 +65,11 @@ function findNode(id: string, nodes: NetworkNode[]): NetworkNode {
   return nodes.find((node) => node.id === id)!;
 }
 
-function checkForZ(nodes: NetworkNode[]) {
-  return nodes.every((node) => node.id[2] === "Z");
+function gcd(a: number, b: number) {
+  if (b == 0) return a;
+  return gcd(b, a % b);
+}
+
+function lcm(a: number, b: number) {
+  return (a / gcd(a, b)) * b;
 }
