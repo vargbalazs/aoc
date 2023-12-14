@@ -34,13 +34,28 @@ function solved8t1(): number {
   let startNode = findNode("AAA", nodes);
   let nextNode: NetworkNode = { id: "", left: "", right: "" };
   let steps = 0;
+  let zzzFound = false;
 
-  while (startNode.left !== "ZZZ" || startNode.right !== "ZZZ") {
+  while (!zzzFound) {
     for (let i = 0; i <= inst.length - 1; i++) {
-      if (inst[i] === "R") nextNode = findNode(startNode.right, nodes);
-      if (inst[i] === "L") nextNode = findNode(startNode.left, nodes);
-      startNode = nextNode;
       steps++;
+      if (inst[i] === "R") {
+        if (startNode.right === "ZZZ") {
+          zzzFound = true;
+          break;
+        } else {
+          nextNode = findNode(startNode.right, nodes);
+        }
+      }
+      if (inst[i] === "L") {
+        if (startNode.left === "ZZZ") {
+          zzzFound = true;
+          break;
+        } else {
+          nextNode = findNode(startNode.left, nodes);
+        }
+      }
+      startNode = nextNode;
     }
   }
 
